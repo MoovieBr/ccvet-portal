@@ -1,0 +1,150 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == 'admin';
+    }
+    function isStaff() {
+      return isSignedIn() && request.auth.token.role == 'staff';
+    }
+    function isAluno() {
+      return isSignedIn() && request.auth.token.role == 'aluno';
+    }
+    // Staff com a permissão dada pela coordenação (lida do próprio doc da equipe).
+    function hasPerm(p) {
+      return isStaff()
+        && get(/databases/$(database)/documents/staff/$(request.auth.uid))
+             .data.get('perms', {}).get(p, false) == true;
+    }
+
+    // Aluno cujo acesso ao conteúdo continua liberado. Quando a turma é
+    // encerrada, o backend grava `acessoConteudo: false` em todos os alunos
+    // dela — o certificado e o histórico financeiro seguem acessíveis, mas
+    // as aulas e apostilas ficam bloqueadas no servidor, não só na tela.
+    function alunoComConteudo() {
+      return isAluno()
+        && get(/databases/$(database)/documents/alunos/$(request.auth.uid))
+             .data.get('acessoConteudo', true) == true;
+    }
+
+    // Turmas: todo mundo autenticado lê (o aluno precisa do nome da sua turma
+    // no cabeçalho e no certificado); só a coordenação gerencia.
+    match /turmas/{id} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || hasPerm('turmas');
+    }
+
+    // Conteúdo do curso: qualquer usuário autenticado lê; escreve o admin.
+    // A chave PIX saiu daqui (a cobrança virou link da Asaas); os dados
+    // fiscais continuam, porque a Asaas exige o código do serviço municipal
+    // em cada nota e não o fornece pela API.
+    match /config/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+      allow update: if hasPerm('financeiro')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['fiscal']);
+    }
+    // Aluno de turma encerrada perde as aulas; coordenação e equipe sempre leem.
+    match /modulos/{id} {
+      allow read: if isAdmin() || isStaff() || alunoComConteudo();
+      allow write: if isAdmin() || hasPerm('modulos');
+    }
+    match /avisos/{id} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || hasPerm('avisos');
+    }
+    match /cronograma/{id} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || hasPerm('cronograma');
+    }
+    match /links/{id} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || hasPerm('links');
+    }
+
+    // Alunos: admin gerencia tudo (inclusive o financeiro); staff com permissão
+    // "alunos" edita apenas dados cadastrais; o próprio aluno lê o seu doc e
+    // só pode alterar progresso/ultimoAcesso.
+    match /alunos/{uid} {
+      allow read: if isAdmin() || hasPerm('alunos') || hasPerm('financeiro')
+        || (isAluno() && request.auth.uid == uid);
+      allow create, delete: if isAdmin() || hasPerm('alunos');
+      allow update: if isAdmin()
+        || (hasPerm('alunos')
+            && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['nome', 'whatsapp', 'cpf', 'cep', 'endereco', 'numero',
+                         'bairro', 'turmaId', 'certificado']))
+        || (hasPerm('financeiro')
+            && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['financeiro']))
+        || (isAluno() && request.auth.uid == uid
+            && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['progresso', 'ultimoAcesso']));
+    }
+
+    // Chamada das aulas práticas — um doc por evento do cronograma.
+    // O aluno NÃO tem acesso: as regras não conseguem esconder um campo de
+    // um documento, então a presença mora fora do doc dele. Quem decide o
+    // certificado (alunos/turmas) lê para consultar; só `presenca` escreve.
+    match /presencas/{eventoId} {
+      allow read: if isAdmin() || hasPerm('presenca') || hasPerm('alunos') || hasPerm('turmas');
+      allow write: if isAdmin() || hasPerm('presenca');
+    }
+
+    // Equipe: admin gerencia; cada membro lê o próprio doc (nome + permissões).
+    match /staff/{uid} {
+      allow read: if isAdmin() || (isStaff() && request.auth.uid == uid);
+      allow write: if isAdmin();
+    }
+
+    // Logs de download/conclusão: aluno cria apenas em nome próprio;
+    // admin e staff com permissão "alunos" leem.
+    match /logs/{id} {
+      allow read: if isAdmin() || hasPerm('alunos');
+      allow create: if isAdmin()
+        || (isAluno()
+            && request.resource.data.alunoId == request.auth.uid
+            && request.resource.data.tipo in ['download', 'conclusao']);
+      allow update, delete: if false;
+    }
+
+    // Comentários das aulas: qualquer usuário autenticado lê; cada um comenta
+    // em nome próprio; apaga o próprio comentário — coordenação e staff com
+    // permissão de módulos moderam (apagam qualquer um).
+    match /comentarios/{id} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.auth.token.role in ['aluno', 'staff', 'admin']
+        && request.resource.data.autorUid == request.auth.uid
+        && request.resource.data.texto is string
+        && request.resource.data.texto.size() > 0
+        && request.resource.data.texto.size() <= 2000;
+      allow delete: if isAdmin() || hasPerm('modulos')
+        || (isSignedIn() && resource.data.autorUid == request.auth.uid);
+      allow update: if false;
+    }
+
+    // Fila de operações privilegiadas (processada pela function processaTarefa).
+    // Admin/staff criam tarefas em nome próprio e acompanham só as suas;
+    // apenas o servidor atualiza o status/resultado.
+    match /tarefas/{id} {
+      allow create: if request.resource.data.autorUid == request.auth.uid
+        && request.resource.data.status == 'pendente'
+        && (isAdmin() || isStaff()
+            // aluno só cria tarefas do próprio pagamento PIX
+            || (isAluno() && request.resource.data.tipo in
+                ['pagarParcela', 'conferirPagamento', 'conferirNota']));
+      allow read: if isSignedIn() && resource.data.autorUid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

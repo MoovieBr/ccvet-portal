@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.role == 'admin';
+    }
+    function isStaffComModulos() {
+      return request.auth != null
+        && request.auth.token.role == 'staff'
+        && firestore.get(/databases/(default)/documents/staff/$(request.auth.uid))
+             .data.get('perms', {}).get('modulos', false) == true;
+    }
+    function isEquipe() {
+      return request.auth != null
+        && (request.auth.token.role == 'admin' || request.auth.token.role == 'staff');
+    }
+    // Aluno ativo e com acesso ao conteúdo liberado. `acessoConteudo` cai para
+    // false quando a turma dele é encerrada — a partir daí, sem apostilas.
+    function isAlunoAtivo() {
+      return request.auth != null
+        && request.auth.token.role == 'aluno'
+        && firestore.get(/databases/(default)/documents/alunos/$(request.auth.uid)).data.ativo == true
+        && firestore.get(/databases/(default)/documents/alunos/$(request.auth.uid))
+             .data.get('acessoConteudo', true) == true;
+    }
+
+    // Apostilas em PDF: admin ou staff com permissão "modulos" sobe/apaga;
+    // equipe e alunos ativos baixam.
+    match /apostilas/{moduloId}/{arquivo} {
+      allow read: if isEquipe() || isAlunoAtivo();
+      allow write: if (isAdmin() || isStaffComModulos())
+        && (request.resource == null
+            || (request.resource.size < 50 * 1024 * 1024
+                && request.resource.contentType == 'application/pdf'));
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

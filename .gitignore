@@ -1,0 +1,15 @@
+# Firebase
+.firebase/
+*-debug.log
+functions/.runtimeconfig.json
+
+# Node
+node_modules/
+
+# Saída do build (gerada por `npm --prefix portal-app run build`)
+public/portal/
+
+# Credenciais locais
+.env
+.env.*
+*service-account*.json
