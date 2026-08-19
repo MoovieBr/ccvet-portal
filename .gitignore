@@ -13,3 +13,5 @@ public/portal/
 .env
 .env.*
 *service-account*.json
+
+# Bundle publicado (regerado pelo build) — mantido fora do versionamento

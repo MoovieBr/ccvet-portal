@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CCVET — Curso de Auxiliar Veterinário 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Baloo 2: fonte arredondada de reserva — cobre os acentos que faltam na Roag (ó, õ, ú...) -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ===========================================================
+   CCVET — Landing de captação (Auxiliar Veterinário 2026)
+   HTML + CSS prontos para o RD Station. Único JS: um script opcional no fim
+   da página que personaliza a mensagem do WhatsApp — a página funciona sem ele.
+   Fonte Roag (marca) + identidade lima / cinza / navy, estilo lúdico/pet.
+   =========================================================== */
+
+@font-face{font-family:"Roag";src:url("fonts/Roag-Regular.otf") format("opentype");font-weight:400;font-display:swap;}
+@font-face{font-family:"Roag";src:url("fonts/Roag-Medium.otf") format("opentype");font-weight:500;font-display:swap;}
+@font-face{font-family:"Roag";src:url("fonts/Roag-Bold.otf") format("opentype");font-weight:700;font-display:swap;}
+@font-face{font-family:"Roag";src:url("fonts/Roag-ExtraBold.otf") format("opentype");font-weight:800;font-display:swap;}
+@font-face{font-family:"Roag";src:url("fonts/Roag-Black.otf") format("opentype");font-weight:900;font-display:swap;}
+
+:root{
+  --lima:#9FC83A;
+  --lima-bright:#C7DD5E;
+  --lima-soft:#EAF3CE;
+  --lima-700:#6E9120;
+  --navy:#16314E;
+  --navy-700:#22425F;
+  --gray:#6E7073;
+  --ink:#3E4044;
+  --cream:#FBF8EF;
+  --cream-2:#F4EEDF;
+  --white:#FFFFFF;
+  --line:#ECE7D8;
+  --maxw:1180px;
+  --shadow-sm:0 2px 10px rgba(22,49,78,.06);
+  --shadow-md:0 14px 34px rgba(22,49,78,.10);
+  --shadow-lg:0 30px 70px rgba(22,49,78,.16);
+  --blob1:64% 36% 47% 53% / 42% 55% 45% 58%;
+  --blob2:42% 58% 63% 37% / 55% 44% 56% 45%;
+  --blob3:50% 50% 56% 44% / 58% 47% 53% 42%;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;font-family:"Roag","Baloo 2","Segoe UI",sans-serif;color:var(--ink);
+  background:var(--cream);-webkit-font-smoothing:antialiased;line-height:1.5;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3,h4{margin:0;font-weight:900;line-height:.98;letter-spacing:-.015em;color:var(--navy);}
+p{margin:0;}
+.lima{color:var(--lima);}
+.gray{color:var(--gray);}
+.navy{color:var(--navy);}
+::selection{background:var(--lima-bright);color:var(--navy);}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px;}
+
+/* paw + blob helpers */
+.paw{position:absolute;opacity:.5;pointer-events:none;z-index:0;}
+.paw svg{display:block;}
+
+/* pill / buttons */
+.pill{display:inline-flex;align-items:center;gap:9px;border-radius:999px;font-weight:700;}
+.btn{display:inline-flex;align-items:center;gap:10px;justify-content:center;border:none;cursor:pointer;
+  font-family:"Roag","Baloo 2",sans-serif;font-weight:800;border-radius:999px;white-space:nowrap;
+  transition:transform .14s ease, box-shadow .16s ease, background .16s, color .16s;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+.btn-lima{background:var(--lima);color:var(--navy);padding:16px 30px;font-size:17px;box-shadow:0 10px 22px rgba(159,200,58,.4);}
+.btn-lima:hover{background:var(--lima-bright);box-shadow:0 16px 30px rgba(159,200,58,.5);}
+.btn-navy{background:var(--navy);color:#fff;padding:16px 30px;font-size:17px;box-shadow:0 10px 22px rgba(22,49,78,.28);}
+.btn-navy:hover{background:var(--navy-700);}
+.btn-ghost{background:transparent;color:var(--navy);padding:15px 26px;font-size:17px;border:2.5px solid var(--navy);}
+.btn-ghost:hover{background:var(--navy);color:#fff;}
+.btn-wa{background:#2bb24c;color:#fff;padding:16px 28px;font-size:17px;box-shadow:0 10px 22px rgba(43,178,76,.3);}
+.btn-wa:hover{background:#24a043;}
+
+/* ---------------- HEADER ---------------- */
+.hdr{position:sticky;top:0;z-index:60;background:rgba(251,248,239,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(236,231,216,.8);}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;height:78px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand .mk{width:46px;height:46px;border-radius:50% 50% 50% 14px;background:var(--navy);display:grid;place-items:center;flex:none;transform:rotate(-6deg);}
+.brand .mk svg{width:26px;height:26px;}
+.brand .nm{font-weight:900;font-size:27px;color:var(--navy);line-height:.9;letter-spacing:.01em;}
+.brand .nm b{color:var(--lima);}
+.brand .sb{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gray);font-weight:700;margin-top:3px;}
+.nav{display:flex;align-items:center;gap:32px;}
+.nav a{font-weight:600;font-size:16.5px;color:var(--ink);transition:color .15s;}
+.nav a:hover{color:var(--lima-700);}
+
+/* ---------------- HERO ---------------- */
+.hero{position:relative;overflow:hidden;padding:46px 0 90px;}
+.hero .blobwrap{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.hero .b-lima{position:absolute;width:760px;height:760px;border-radius:var(--blob1);background:radial-gradient(circle at 35% 30%,var(--lima-bright),var(--lima));right:-180px;top:-150px;opacity:.95;}
+.hero .b-soft{position:absolute;width:520px;height:520px;border-radius:var(--blob2);background:var(--lima-soft);left:-160px;bottom:-160px;}
+.hero-in{position:relative;z-index:2;display:grid;grid-template-columns:1.04fr .96fr;gap:30px;align-items:center;}
+.hero-eyebrow{background:var(--navy);color:#fff;padding:9px 18px 9px 12px;font-size:14.5px;box-shadow:var(--shadow-sm);white-space:nowrap;}
+.hero-eyebrow .dot{width:20px;height:20px;border-radius:50%;background:var(--lima);display:grid;place-items:center;}
+.hero-eyebrow .dot svg{width:12px;height:12px;}
+.hero h1{font-size:clamp(44px,5.6vw,82px);margin-top:22px;letter-spacing:-.025em;}
+.hero h1 .l2{display:block;}
+.hero-sub{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:clamp(17px,1.5vw,20px);color:var(--ink);max-width:46ch;margin-top:22px;line-height:1.5;}
+.hero-sub b{color:var(--navy);font-weight:800;}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px;}
+.hero-trust{display:flex;align-items:center;gap:18px;margin-top:26px;flex-wrap:wrap;}
+.hero-trust .t{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--navy);font-size:14.5px;}
+.hero-trust .t .c{width:22px;height:22px;border-radius:50%;background:var(--lima);display:grid;place-items:center;flex:none;}
+.hero-trust .t .c svg{width:12px;height:12px;}
+
+/* hero art */
+.hero-art{position:relative;display:grid;place-items:center;min-height:440px;}
+.dog-blob{position:relative;width:min(440px,86%);aspect-ratio:1/0.94;border-radius:var(--blob1);
+  background:linear-gradient(160deg,var(--navy),var(--navy-700));display:flex;align-items:flex-end;justify-content:center;
+  box-shadow:var(--shadow-lg);overflow:visible;}
+.dog-blob::before{content:"";position:absolute;inset:14px;border-radius:inherit;border:3px dashed rgba(255,255,255,.18);}
+.dog-blob .dog{position:relative;z-index:2;width:122%;max-width:none;margin-bottom:-2px;filter:drop-shadow(0 14px 18px rgba(0,0,0,.3));}
+.stamp{position:absolute;right:-26px;top:-26px;width:138px;height:138px;z-index:5;filter:drop-shadow(0 8px 16px rgba(22,49,78,.22));}
+.stamp .ring{transform-origin:100px 100px;animation:spin 22s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media(prefers-reduced-motion:reduce){.stamp .ring{animation:none;}}
+.float-pill{position:absolute;left:-6px;bottom:24px;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow-md);z-index:5;display:flex;align-items:center;gap:11px;transform:rotate(-4deg);}
+.float-pill .ic{width:38px;height:38px;border-radius:12px;background:var(--lima-soft);display:grid;place-items:center;flex:none;}
+.float-pill .ic svg{width:20px;height:20px;stroke:var(--lima-700);}
+.float-pill .tx b{display:block;font-weight:900;color:var(--navy);font-size:15px;line-height:1.05;white-space:nowrap;}
+.float-pill .tx span{font-size:12px;color:var(--gray);font-weight:600;white-space:nowrap;}
+/* foto do herói (cachorro + gato) */
+.photo-blob{position:relative;z-index:2;width:min(470px,92%);aspect-ratio:1/1;border-radius:var(--blob1);overflow:hidden;background:#fff;border:11px solid var(--navy);box-shadow:var(--shadow-lg);}
+.photo-blob::after{content:"";position:absolute;inset:0;border-radius:inherit;border:3px dashed rgba(159,200,58,.55);margin:9px;pointer-events:none;z-index:3;}
+.photo-blob img{width:100%;height:100%;object-fit:cover;object-position:center 38%;transform:scale(1.04);}
+
+/* marquee strip */
+.strip{background:var(--navy);color:#fff;overflow:hidden;padding:16px 0;position:relative;z-index:3;}
+.strip-in{display:flex;gap:46px;white-space:nowrap;animation:slide 26s linear infinite;width:max-content;}
+@keyframes slide{to{transform:translateX(-50%);}}
+.strip span{font-weight:800;font-size:18px;letter-spacing:.01em;display:inline-flex;align-items:center;gap:46px;}
+.strip b{color:var(--lima);}
+.strip .sep{width:9px;height:9px;border-radius:50%;background:var(--lima);display:inline-block;}
+
+/* ---------------- SECTION SHELL ---------------- */
+section{position:relative;}
+.sec{padding:96px 0;}
+.tagline{display:inline-flex;align-items:center;gap:9px;background:var(--lima-soft);color:var(--lima-700);font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:8px 16px;border-radius:999px;}
+.sec-head{max-width:60ch;}
+.sec-head.center{text-align:center;margin:0 auto;}
+.sec-head h2{font-size:clamp(34px,4.4vw,58px);margin-top:18px;line-height:1.0;}
+.sec-head p{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:18.5px;color:var(--ink);margin-top:16px;line-height:1.5;}
+
+/* ---------------- DIFERENCIAIS ---------------- */
+.diff{background:var(--white);}
+.diff .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:50px;}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feat{position:relative;border-radius:26px;padding:30px 28px 32px;overflow:hidden;transition:transform .18s ease, box-shadow .18s ease;border:1.5px solid var(--line);background:var(--cream);}
+.feat:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);}
+.feat .ic{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;margin-bottom:20px;}
+.feat .ic svg{width:30px;height:30px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.feat h3{font-size:23px;}
+.feat p{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;margin-top:9px;font-size:15.5px;color:var(--gray);line-height:1.5;}
+.feat .num{position:absolute;right:20px;top:14px;font-size:60px;font-weight:900;color:rgba(22,49,78,.06);line-height:1;}
+.feat.v-lima{background:var(--lima);border-color:transparent;}
+.feat.v-lima h3,.feat.v-lima p{color:var(--navy);}
+.feat.v-lima p{color:var(--navy-700);}
+.feat.v-lima .ic{background:rgba(255,255,255,.5);}
+.feat.v-lima .ic svg{stroke:var(--navy);}
+.feat.v-lima .num{color:rgba(22,49,78,.12);}
+.feat.v-navy{background:var(--navy);border-color:transparent;}
+.feat.v-navy h3{color:#fff;}.feat.v-navy p{color:rgba(255,255,255,.78);}
+.feat.v-navy .ic{background:rgba(255,255,255,.12);}.feat.v-navy .ic svg{stroke:var(--lima);}
+.feat.v-navy .num{color:rgba(255,255,255,.09);}
+.feat .ic.cream{background:var(--lima-soft);}.feat .ic.cream svg{stroke:var(--lima-700);}
+
+/* ---------------- SOBRE ---------------- */
+.about{background:var(--cream-2);overflow:hidden;}
+.about-in{display:grid;grid-template-columns:.92fr 1.08fr;gap:64px;align-items:center;position:relative;z-index:1;}
+.about-art{position:relative;}
+.ph{position:relative;border-radius:var(--blob3);overflow:hidden;aspect-ratio:4/4.4;
+  background:#fff;box-shadow:var(--shadow-md);border:9px solid var(--navy);}
+.ph::after{content:"";position:absolute;inset:8px;border-radius:inherit;border:3px dashed rgba(159,200,58,.5);pointer-events:none;z-index:4;}
+.ph .slides{position:absolute;inset:0;display:flex;width:400%;animation:petscroll 18s infinite;will-change:transform;}
+.ph .slide{flex:0 0 25%;height:100%;}
+.ph .slide img{width:100%;height:100%;object-fit:cover;object-position:center 42%;}
+@keyframes petscroll{
+  0%,19%{transform:translateX(0);}
+  25%,44%{transform:translateX(-25%);}
+  50%,69%{transform:translateX(-50%);}
+  75%,100%{transform:translateX(-75%);}
+}
+.ph .dots{position:absolute;left:0;right:0;bottom:16px;z-index:5;display:flex;justify-content:center;gap:7px;}
+.ph .dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 1px 3px rgba(22,49,78,.4);animation:petdots 18s infinite;}
+.ph .dots i:nth-child(2){animation-delay:4.5s;}
+.ph .dots i:nth-child(3){animation-delay:9s;}
+@keyframes petdots{0%,22%{background:var(--lima);transform:scale(1.25);}28%,100%{background:rgba(255,255,255,.55);transform:scale(1);}}
+@media(prefers-reduced-motion:reduce){.ph .slides,.ph .dots i{animation:none;}}
+.about-art .pawbadge{position:absolute;right:-30px;bottom:6px;width:158px;height:158px;z-index:9;
+  filter:drop-shadow(0 12px 20px rgba(22,49,78,.30));animation:pawbob 3.6s ease-in-out infinite;transform-origin:center 70%;}
+.about-art .pawbadge .pawshape{width:100%;height:100%;fill:var(--lima);display:block;}
+.about-art .pawbadge-tx{position:absolute;left:0;right:0;top:57%;text-align:center;pointer-events:none;}
+.about-art .pawbadge-tx b{display:block;font-weight:900;font-size:33px;color:var(--navy);line-height:.78;letter-spacing:-.02em;}
+.about-art .pawbadge-tx span{display:block;font-weight:800;font-size:12.5px;color:var(--navy-700);text-transform:uppercase;letter-spacing:.12em;margin-top:3px;}
+@keyframes pawbob{0%,100%{transform:translateY(0) rotate(-7deg);}50%{transform:translateY(-10px) rotate(5deg);}}
+@media(prefers-reduced-motion:reduce){.about-art .pawbadge{animation:none;}}
+.about h2{font-size:clamp(32px,4vw,52px);}
+.about > .about-in p.lead{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:18px;color:var(--ink);margin-top:20px;line-height:1.55;}
+.about p.lead b{color:var(--navy);font-weight:800;}
+.about .points{display:grid;gap:20px;margin-top:28px;}
+.point{display:flex;gap:14px;align-items:flex-start;}
+.point .pn{width:40px;height:40px;border-radius:13px;background:var(--navy);display:grid;place-items:center;flex:none;}
+.point .pn svg{width:21px;height:21px;stroke:var(--lima);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.point .pt b{display:block;font-weight:900;color:var(--navy);font-size:17.5px;margin-bottom:2px;}
+.point .pt span{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;color:var(--gray);font-size:15px;line-height:1.4;}
+
+/* ---------------- DEPOIMENTOS ---------------- */
+.depo{background:var(--navy);overflow:hidden;}
+.depo .wm{position:absolute;font-weight:900;font-size:240px;color:rgba(255,255,255,.04);bottom:-70px;right:-30px;letter-spacing:-.04em;z-index:0;}
+.depo .sec-head h2{color:#fff;}
+.depo .sec-head p{color:rgba(255,255,255,.78);}
+.depos{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:50px;}
+.dcard{background:var(--navy-700);border-radius:24px;padding:30px;position:relative;}
+.dcard .quote-mark{font-size:64px;font-weight:900;color:var(--lima);line-height:.6;height:30px;}
+.dcard .stars{color:var(--lima);letter-spacing:3px;font-size:16px;margin-top:6px;}
+.dcard p{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;color:rgba(255,255,255,.92);font-size:16px;line-height:1.6;margin-top:12px;}
+.dcard .who{display:flex;align-items:center;gap:13px;margin-top:22px;}
+.dcard .av{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px;color:var(--navy);flex:none;}
+.dcard .who .nm{font-weight:800;color:#fff;font-size:16px;}
+.dcard .who .rl{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:13.5px;color:var(--lima-bright);}
+
+/* ---------------- FORM (RD placeholder) ---------------- */
+.cap{background:var(--cream);overflow:hidden;}
+.cap-in{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;}
+.cap .b-soft{position:absolute;width:560px;height:560px;border-radius:var(--blob2);background:var(--lima-soft);right:-200px;top:-160px;z-index:0;}
+.cap h2{font-size:clamp(32px,4.2vw,54px);}
+.cap .lead{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:18px;color:var(--ink);margin-top:18px;max-width:40ch;line-height:1.5;}
+.cap .lead b{color:var(--navy);font-weight:800;}
+.cap .mini-list{display:grid;gap:12px;margin-top:26px;}
+.cap .mini-list .mi{display:flex;gap:12px;align-items:center;font-weight:700;color:var(--navy);font-size:16px;}
+.cap .mini-list .mi .c{width:26px;height:26px;border-radius:9px;background:var(--lima);display:grid;place-items:center;flex:none;}
+.cap .mini-list .mi .c svg{width:14px;height:14px;}
+.formcard{position:relative;z-index:2;background:#fff;border-radius:28px;box-shadow:var(--shadow-lg);overflow:hidden;border:1px solid var(--line);}
+.formcard .fhead{background:var(--navy);color:#fff;padding:26px 30px;position:relative;overflow:hidden;}
+.formcard .fhead::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(159,200,58,.18);right:-60px;top:-70px;}
+.formcard .fhead h3{color:#fff;font-size:25px;position:relative;}
+.formcard .fhead p{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;color:rgba(255,255,255,.84);font-size:14.5px;margin-top:7px;position:relative;}
+.fbody{padding:26px 30px 30px;}
+.rd-note{display:flex;gap:10px;align-items:flex-start;background:var(--lima-soft);border:1.5px dashed var(--lima);border-radius:14px;padding:12px 14px;margin-bottom:20px;font-family:"Roag","Baloo 2",sans-serif;font-weight:600;font-size:12.5px;color:var(--lima-700);line-height:1.4;}
+.rd-note svg{width:18px;height:18px;flex:none;margin-top:1px;}
+.ffield{margin-bottom:15px;}
+.ffield label{display:block;font-weight:700;font-size:14px;color:var(--navy);margin-bottom:6px;}
+.ffield input{width:100%;border:1.5px solid var(--line);border-radius:13px;padding:14px 15px;font-size:15.5px;font-family:"Roag","Baloo 2",sans-serif;font-weight:500;color:var(--ink);background:var(--cream);transition:border-color .15s, box-shadow .15s;}
+.ffield input::placeholder{color:#b3ab98;}
+.ffield input:focus{outline:none;border-color:var(--lima);box-shadow:0 0 0 4px rgba(159,200,58,.2);background:#fff;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fconsent{display:flex;gap:10px;align-items:flex-start;margin:8px 0 20px;font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:12.5px;color:var(--gray);line-height:1.45;}
+.fconsent input{margin-top:2px;width:17px;height:17px;accent-color:var(--lima-700);flex:none;}
+.fsubmit{width:100%;padding:17px;font-size:18px;border-radius:15px;}
+.fafter{text-align:center;margin-top:14px;font-family:"Roag","Baloo 2",sans-serif;font-weight:600;font-size:12.5px;color:var(--gray);}
+
+.fprev{background:var(--lima-soft);border:1.5px dashed var(--lima);border-radius:16px 16px 16px 4px;padding:12px 16px;margin:4px 0 18px;font-weight:600;font-size:13.5px;color:var(--lima-700);line-height:1.5;}
+
+/* ---------------- FOOTER ---------------- */
+.ft{background:var(--navy);color:rgba(255,255,255,.8);padding:64px 0 32px;position:relative;overflow:hidden;}
+.ft .paw{opacity:.06;}
+.ft-top{position:relative;z-index:1;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:38px;}
+.ft .brand .nm{color:#fff;}
+.ft .brand .mk{background:rgba(255,255,255,.12);}
+.ft .brand .sb{color:rgba(255,255,255,.5);}
+.ft-about{font-family:"Roag","Baloo 2",sans-serif;font-weight:500;margin-top:18px;font-size:14.5px;max-width:34ch;color:rgba(255,255,255,.68);line-height:1.55;}
+.ft h4{color:#fff;font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;font-weight:800;}
+.ft-links{display:grid;gap:11px;font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:14.5px;}
+.ft-links a:hover{color:var(--lima);}
+.soc{display:flex;gap:11px;margin-top:8px;}
+.soc a{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center;transition:background .15s;}
+.soc a:hover{background:var(--lima);}
+.soc svg{width:20px;height:20px;fill:#fff;}
+.ft-bot{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.12);margin-top:46px;padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:"Roag","Baloo 2",sans-serif;font-weight:500;font-size:13px;color:rgba(255,255,255,.5);}
+/* crédito Moovie: apagada por padrão, acende no hover
+   (margem à direita reserva o espaço do botão flutuante de WhatsApp) */
+.ft-bot .moovie{display:inline-flex;align-items:center;margin-right:196px;}
+.ft-bot .moovie img{height:22px;width:auto;opacity:.4;transition:opacity .22s ease;}
+.ft-bot .moovie:hover img{opacity:1;}
+
+/* floating WA */
+.fab{position:fixed;right:24px;bottom:24px;z-index:70;display:flex;align-items:center;gap:10px;background:#2bb24c;color:#fff;padding:14px 22px 14px 17px;border-radius:999px;box-shadow:0 14px 30px rgba(43,178,76,.45);font-weight:800;font-size:16px;white-space:nowrap;transition:transform .14s;}
+.fab:hover{transform:translateY(-2px) scale(1.03);}
+.fab svg{width:24px;height:24px;fill:#fff;}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media(max-width:980px){
+  .hero-in{grid-template-columns:1fr;gap:14px;}
+  .hero-art{min-height:380px;margin-top:10px;}
+  .feats{grid-template-columns:1fr 1fr;}
+  .about-in{grid-template-columns:1fr;gap:40px;}
+  .about-art{order:-1;width:100%;max-width:420px;margin:0 auto;}
+  .depos{grid-template-columns:1fr;}
+  .cap-in{grid-template-columns:1fr;gap:36px;}
+  .nav{display:none;}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px;}
+  .frow{grid-template-columns:1fr;}
+  .diff .head-row{flex-direction:column;align-items:flex-start;}
+  .ft-top{grid-template-columns:1fr 1fr;gap:30px 20px;}
+  .ft-top > div:first-child{grid-column:1 / -1;}
+  .ft-bot{flex-direction:column;align-items:flex-start;}
+  .ft-bot .moovie{margin-right:0;}
+}
+
+/* ---------------- MOBILE ---------------- */
+@media(max-width:700px){
+  /* header compacto, mantendo o acesso ao Portal do Aluno */
+  .hdr-in{height:64px;}
+  .brand .mk{width:38px;height:38px;}
+  .brand .mk svg{width:22px;height:22px;}
+  .brand .nm{font-size:22px;}
+  .brand .sb{display:none;}
+  .hdr .btn{padding:10px 16px;font-size:14px;}
+
+  /* respiro vertical menor */
+  .sec{padding:60px 0;}
+  .hero{padding:28px 0 64px;}
+  .hero h1{margin-top:16px;}
+  .hero-art{min-height:0;margin-top:22px;}
+
+  /* carimbo menor e dentro da tela */
+  .stamp{width:104px;height:104px;right:0;top:-14px;}
+  .float-pill{left:0;bottom:8px;padding:10px 13px;}
+
+  /* diferenciais: carrossel com scroll lateral */
+  .feats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+    margin:0 -20px;padding:4px 20px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .feats::-webkit-scrollbar{display:none;}
+  .feat{flex:0 0 76%;scroll-snap-align:center;}
+
+  /* depoimentos: carrossel com scroll lateral */
+  .depos{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;
+    margin:44px -20px 0;padding:4px 20px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .depos::-webkit-scrollbar{display:none;}
+  .dcard{flex:0 0 84%;scroll-snap-align:center;}
+
+  /* botão flutuante mais discreto */
+  .fab{padding:13px 18px 13px 15px;font-size:15px;right:16px;bottom:16px;}
+
+  /* patinha "100% prático" à frente e dentro da tela */
+  .about-art .pawbadge{width:126px;height:126px;right:-4px;bottom:-6px;}
+  .about-art .pawbadge-tx b{font-size:26px;}
+  .about-art .pawbadge-tx span{font-size:10.5px;}
+}
+</style>
+</head>
+<body>
+
+<!-- paw symbol reused via <use> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="pawicon" viewBox="0 0 64 64">
+    <ellipse cx="32" cy="44" rx="15" ry="12"/>
+    <circle cx="13" cy="29" r="6.2"/>
+    <circle cx="26" cy="19" r="6.8"/>
+    <circle cx="40" cy="19" r="6.8"/>
+    <circle cx="53" cy="29" r="6.2"/>
+  </symbol>
+</svg>
+
+<!-- ===================== HEADER ===================== -->
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#topo">
+      <span class="mk"><svg viewBox="0 0 64 64" fill="#9FC83A"><use href="#pawicon"/></svg></span>
+      <span>
+        <span class="nm">CC<b>VET</b></span>
+        <span class="sb">Capacitação Veterinária</span>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#curso">O curso</a>
+      <a href="#diferenciais">Diferenciais</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#form">Contato</a>
+    </nav>
+    <a href="/portal" class="btn btn-lima">Portal do Aluno</a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="topo">
+  <div class="blobwrap">
+    <div class="b-lima"></div>
+    <div class="b-soft"></div>
+  </div>
+  <span class="paw" style="left:54%;top:30px;width:46px"><svg viewBox="0 0 64 64" fill="#16314E" style="opacity:.12"><use href="#pawicon"/></svg></span>
+  <div class="wrap hero-in">
+    <div class="hero-copy">
+      <span class="pill hero-eyebrow"><span class="dot"><svg viewBox="0 0 64 64" fill="#16314E"><use href="#pawicon"/></svg></span> Inscrições abertas • Turma 2026</span>
+      <h1><span class="lima">Seja o braço</span> <span class="l2 gray">direito de um</span> <span class="l2 navy">médico veterinário</span></h1>
+      <p class="hero-sub">Aprenda com especialistas e ganhe a <b>segurança que você precisa</b> para atuar na área — com formato híbrido, estágio garantido e muita prática.</p>
+      <div class="hero-cta">
+        <a href="#form" class="btn btn-navy">Quero garantir minha vaga</a>
+        <a href="https://wa.me/5547996551654?text=Ol%C3%A1!%20Vim%20do%20site%20do%20CCVET%20e%20queria%20saber%20mais%20sobre%20o%20curso%20de%20Auxiliar%20Veterin%C3%A1rio." target="_blank" rel="noopener" class="btn btn-ghost">Falar no WhatsApp</a>
+      </div>
+      <div class="hero-trust">
+        <span class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Formato híbrido</span>
+        <span class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Certificado</span>
+        <span class="t"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Estágio garantido</span>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="photo-blob" data-comment-anchor="ed75b14a52-img">
+        <img src="assets/pets-hero.webp" alt="Cachorro e gato lado a lado — CCVET" />
+      </div>
+      <!-- carimbo girando (anel externo animado) + centro fixo -->
+      <svg class="stamp" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="98" fill="#9FC83A"/>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#16314E" stroke-width="1.5" stroke-dasharray="2 5" opacity=".4"/>
+        <g class="ring">
+          <defs><path id="cpath" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0"/></defs>
+          <text fill="#16314E" font-family="Roag,'Baloo 2',sans-serif" font-weight="800" font-size="13.5" letter-spacing="2">
+            <textPath href="#cpath" startOffset="0%">CURSO DE AUXILIAR VETERINÁRIO • TURMA 2026 • ÚLTIMAS VAGAS • </textPath>
+          </text>
+        </g>
+        <g transform="translate(100,92)">
+          <svg x="-13" y="-32" width="26" height="26" viewBox="0 0 64 64" fill="#16314E"><use href="#pawicon"/></svg>
+          <text text-anchor="middle" y="12" fill="#16314E" font-family="Roag,'Baloo 2',sans-serif" font-weight="900" font-size="23" letter-spacing="1" data-comment-anchor="8c8f67baaa-text">ÚLTIMAS</text>
+          <text text-anchor="middle" y="37" fill="#16314E" font-family="Roag,'Baloo 2',sans-serif" font-weight="900" font-size="23" letter-spacing="1">VAGAS</text>
+        </g>
+      </svg>
+      <div class="float-pill">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></span>
+        <span class="tx"><b>Híbrido</b><span>online + prático</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STRIP ===================== -->
+<div class="strip">
+  <div class="strip-in">
+    <span>Estágio garantido <span class="sep"></span> Certificado <span class="sep"></span> Apostila exclusiva <span class="sep"></span> Carta de recomendação <span class="sep"></span> Práticas diferenciadas <span class="sep"></span></span>
+    <span>Estágio garantido <span class="sep"></span> Certificado <span class="sep"></span> Apostila exclusiva <span class="sep"></span> Carta de recomendação <span class="sep"></span> Práticas diferenciadas <span class="sep"></span></span>
+  </div>
+</div>
+
+<!-- ===================== DIFERENCIAIS ===================== -->
+<section class="sec diff" id="diferenciais">
+  <div class="wrap">
+    <div class="head-row">
+      <div class="sec-head">
+        <span class="tagline"><svg width="15" height="15" viewBox="0 0 64 64" fill="#6E9120"><use href="#pawicon"/></svg> O que você leva</span>
+        <h2><span class="navy">Tudo o que você precisa</span> <span class="lima">para começar certo</span></h2>
+      </div>
+      <p class="sec-head" style="max-width:34ch;color:var(--gray);font-weight:500;font-size:17px" data-comment-anchor="5ce587de07-p">No CCVET você não recebe só teoria — sai preparado para o mercado, com prática real e suporte de verdade.</p>
+    </div>
+    <div class="feats">
+      <div class="feat"><span class="num">01</span><div class="ic cream"><svg viewBox="0 0 24 24" stroke="#6E9120"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div><h3>Formato híbrido</h3><p>Aulas online ao vivo combinadas com encontros práticos presenciais.</p></div>
+      <div class="feat v-lima"><span class="num">02</span><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 7.5 21l4.5-2.5L16.5 21 15 13.5"/></svg></div><h3>Certificado</h3><p>Certificação reconhecida ao concluir o curso.</p></div>
+      <div class="feat"><span class="num">03</span><div class="ic cream"><svg viewBox="0 0 24 24" stroke="#6E9120"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Estágio garantido</h3><p>Vivência real em clínicas e hospitais parceiros da CCVET.</p></div>
+      <div class="feat v-navy"><span class="num">04</span><div class="ic"><svg viewBox="0 0 24 24" stroke="#9FC83A"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div><h3>Carta de recomendação</h3><p>Apoio formal para impulsionar suas primeiras oportunidades.</p></div>
+      <div class="feat"><span class="num">05</span><div class="ic cream"><svg viewBox="0 0 24 24" stroke="#6E9120"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M19 17H6a2 2 0 0 0-2 2"/></svg></div><h3>Apostila exclusiva</h3><p>Material didático completo, autoral e atualizado.</p></div>
+      <div class="feat v-lima"><span class="num">06</span><div class="ic"><svg viewBox="0 0 64 64" fill="#16314E" stroke="none"><use href="#pawicon"/></svg></div><h3>Práticas diferenciadas</h3><p>Manejo, contenção e cuidados com foco no bem-estar animal.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOBRE ===================== -->
+<section class="sec about" id="curso">
+  <span class="paw" style="right:6%;top:40px;width:60px"><svg viewBox="0 0 64 64" fill="#16314E" style="opacity:.07"><use href="#pawicon"/></svg></span>
+  <div class="wrap about-in">
+    <div class="about-art">
+      <div class="ph" data-comment-anchor="bdde532ce8-div">
+        <div class="slides">
+          <div class="slide"><img src="assets/clinic-1.webp" alt="Veterinária com cão na clínica — CCVET" /></div>
+          <div class="slide"><img src="assets/clinic-2.webp" alt="Veterinário segurando cãozinho — CCVET" /></div>
+          <div class="slide"><img src="assets/clinic-3.webp" alt="Exame de rotina em gato — CCVET" /></div>
+          <div class="slide"><img src="assets/clinic-1.webp" alt="Veterinária com cão na clínica — CCVET" /></div>
+        </div>
+        <div class="dots"><i></i><i></i><i></i></div>
+      </div>
+      <div class="pawbadge" aria-label="100% prático">
+        <svg class="pawshape" viewBox="0 0 64 64" fill="#9FC83A">
+          <ellipse cx="32" cy="45" rx="16" ry="13"/>
+          <circle cx="12" cy="30" r="6.4"/>
+          <circle cx="25" cy="19" r="7"/>
+          <circle cx="39" cy="19" r="7"/>
+          <circle cx="52" cy="30" r="6.4"/>
+        </svg>
+        <div class="pawbadge-tx"><b>100%</b><span>prático</span></div>
+      </div>
+    </div>
+    <div>
+      <span class="tagline"><svg width="15" height="15" viewBox="0 0 64 64" fill="#6E9120"><use href="#pawicon"/></svg> Sobre a CCVET</span>
+      <h2 style="margin-top:18px"><span class="lima">Formando referências</span> <span class="gray">no cuidado animal</span></h2>
+      <p class="lead">No CCVET, focamos no que realmente importa: o seu aprendizado prático e ético. Nossos cursos são desenhados para <b>transformar estudantes e profissionais em referências no setor</b>.</p>
+      <div class="points">
+        <div class="point"><span class="pn"><svg viewBox="0 0 24 24"><path d="M12 14s-5-3-5-7a5 5 0 0 1 10 0c0 4-5 7-5 7z"/><circle cx="12" cy="7" r="1.6"/></svg></span><span class="pt"><b>Professores atuantes</b><span>Quem vive a rotina da clínica todos os dias.</span></span></div>
+        <div class="point"><span class="pn"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.8"/></svg></span><span class="pt"><b>Turmas reduzidas</b><span>Acompanhamento de perto, do início ao fim.</span></span></div>
+        <div class="point"><span class="pn"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-5 5a2 2 0 1 0 2.8 2.8l5-5a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg></span><span class="pt"><b>Estrutura prática</b><span>Aprender fazendo, com equipamento de verdade.</span></span></div>
+      </div>
+      <a href="#form" class="btn btn-lima" style="margin-top:30px">Quero garantir minha vaga</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DEPOIMENTOS ===================== -->
+<section class="sec depo" id="depoimentos">
+  <span class="wm">ccvet</span>
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="tagline" style="background:rgba(159,200,58,.16);color:var(--lima-bright)"><svg width="15" height="15" viewBox="0 0 64 64" fill="#C7DD5E"><use href="#pawicon"/></svg> Quem já passou por aqui</span>
+      <h2><span style="color:#fff">Histórias que viram </span><span class="lima">carreira</span></h2>
+      <p>Depoimentos de alunos e profissionais formados pela CCVET.</p>
+    </div>
+    <div class="depos">
+      <div class="dcard"><div class="quote-mark">“</div><div class="stars">★★★★★</div><p>Quero agradecer à equipe da CCVet por toda dedicação, paciência e profissionalismo. Foi um período muito especial que levarei comigo para sempre. Terminei o curso com muito mais conhecimento e um grande aprendizado. Obrigado a toda a equipe!</p><div class="who"><span class="av" style="overflow:hidden;padding:0"><img src="assets/depo-juan.webp" alt="Juan Pablo" style="width:100%;height:100%;object-fit:cover;display:block" /></span><div><div class="nm">Juan Pablo</div><div class="rl">Aluno formado</div></div></div></div>
+      <div class="dcard"><div class="quote-mark">“</div><div class="stars">★★★★★</div><p>Fiz o curso de Auxiliar Veterinário no CCVet e gostei muito. Aprendi bastante sobre a área, com aulas claras e professores atenciosos. O curso me trouxe conhecimento e confiança. Recomendo!</p><div class="who"><span class="av" style="overflow:hidden;padding:0"><img src="assets/depo-pamela.webp" alt="Pamela" style="width:100%;height:100%;object-fit:cover;display:block" /></span><div><div class="nm">Pamela</div><div class="rl">Aluna formada</div></div></div></div>
+      <div class="dcard"><div class="quote-mark">“</div><div class="stars">★★★★★</div><p>Conteúdo direto ao ponto e muito cuidado com cada aluno. Recomendo de olhos fechados.</p><div class="who"><span class="av" style="background:#EAF3CE">RS</span><div><div class="nm">Renata S.</div><div class="rl">Tutora de pets</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FORM / CAPTAÇÃO ===================== -->
+<section class="sec cap" id="form">
+  <div class="b-soft"></div>
+  <span class="paw" style="left:3%;bottom:30px;width:54px"><svg viewBox="0 0 64 64" fill="#16314E" style="opacity:.08"><use href="#pawicon"/></svg></span>
+  <div class="wrap cap-in">
+    <div class="cap-copy">
+      <span class="tagline"><svg width="15" height="15" viewBox="0 0 64 64" fill="#6E9120"><use href="#pawicon"/></svg> Vagas limitadas</span>
+      <h2 style="margin-top:18px"><span class="navy">Dê o primeiro passo na sua</span> <span class="lima">carreira veterinária</span></h2>
+      <p class="lead">Chame a CCVET no WhatsApp e receba o conteúdo programático, valores, datas e condições especiais de lançamento — <b>antes de todo mundo</b>.</p>
+      <div class="mini-list">
+        <div class="mi"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Resposta rápida pelo WhatsApp</div>
+        <div class="mi"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Condições especiais de lançamento</div>
+        <div class="mi"><span class="c"><svg viewBox="0 0 24 24" fill="none" stroke="#16314E" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Sem compromisso e sem spam</div>
+      </div>
+    </div>
+
+    <!-- ===========================================================
+         CAPTAÇÃO VIA WHATSAPP — o botão é um link direto (funciona
+         sem JavaScript). O script no fim da página apenas PERSONALIZA
+         a mensagem com nome + cidade; se o RD Station remover o
+         script, o botão continua enviando a mensagem padrão.
+         =========================================================== -->
+    <div class="formcard">
+      <div class="fhead">
+        <h3>Garanta sua vaga</h3>
+        <p>Chame a CCVET no WhatsApp e receba tudo em primeira mão.</p>
+      </div>
+      <div class="fbody">
+        <div class="ffield"><label>Seu nome</label><input type="text" id="wa-nome" placeholder="Como você se chama?" /></div>
+        <div class="ffield"><label>Sua cidade</label><input type="text" id="wa-cidade" placeholder="Onde você mora?" /></div>
+        <a id="wa-cta" class="btn btn-wa fsubmit" target="_blank" rel="noopener" href="https://wa.me/5547996551654?text=Ol%C3%A1!%20Vim%20do%20site%20do%20CCVET%20e%20queria%20saber%20mais%20sobre%20o%20curso%20de%20Auxiliar%20Veterin%C3%A1rio.">
+          <svg viewBox="0 0 24 24" fill="#fff" style="width:22px;height:22px"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2m0 18.13c-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.24 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42-.14-.01-.31-.01-.48-.01s-.43.06-.66.31c-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>
+          Chamar no WhatsApp
+        </a>
+        <div class="fafter">Você fala direto com a nossa equipe — resposta rápida em horário comercial. 🐾</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="ft">
+  <span class="paw" style="right:4%;top:30px;width:120px"><svg viewBox="0 0 64 64" fill="#fff"><use href="#pawicon"/></svg></span>
+  <div class="wrap">
+    <div class="ft-top">
+      <div>
+        <div class="brand">
+          <span class="mk"><svg viewBox="0 0 64 64" fill="#9FC83A"><use href="#pawicon"/></svg></span>
+          <span><span class="nm">CC<b>VET</b></span><span class="sb">Capacitação Veterinária</span></span>
+        </div>
+        <p class="ft-about">Capacitação veterinária com foco no aprendizado prático e ético. Transformando estudantes e profissionais em referências no setor.</p>
+        <div class="soc">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.07.05 1.8.22 2.43.47.66.25 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.07-.22 1.8-.47 2.43-.25.66-.6 1.22-1.15 1.77-.55.55-1.11.9-1.77 1.15-.63.25-1.36.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.07-.05-1.8-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.63-.42-1.36-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.07.22-1.8.47-2.43.25-.66.6-1.22 1.15-1.77.55-.55 1.11-.9 1.77-1.15.63-.25 1.36-.42 2.43-.47C8.94 2.01 9.28 2 12 2m0 3.4A6.6 6.6 0 1 0 18.6 12 6.6 6.6 0 0 0 12 5.4m0 1.8A4.8 4.8 0 1 1 7.2 12 4.8 4.8 0 0 1 12 7.2m5.35-1a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.9 3.78-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <div class="ft-links">
+          <a href="#curso">O curso</a>
+          <a href="#diferenciais">Diferenciais</a>
+          <a href="#depoimentos">Depoimentos</a>
+          <a href="#form">Inscreva-se</a>
+          <a href="/portal">Portal do Aluno</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <div class="ft-links">
+          <a href="https://wa.me/5547996551654" target="_blank" rel="noopener">WhatsApp: (47) 99655-1654</a>
+          <a href="mailto:contato@ccvet.com.br">contato@ccvet.com.br</a>
+          <a href="https://www.instagram.com/ccvetitajai" target="_blank" rel="noopener">@ccvetitajai</a>
+          <a href="#topo">Itajaí • Santa Catarina</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2026 CCVET — Capacitação Veterinária. Todos os direitos reservados.</span>
+      <a class="moovie" href="https://mooviebrasil.com" target="_blank" rel="noopener" aria-label="Moovie — Agência de Conteúdo">
+        <img src="assets/moovie.webp" alt="Moovie — Agência de Conteúdo" width="127" height="22" loading="lazy" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a class="fab" href="https://wa.me/5547996551654?text=Ol%C3%A1!%20Vim%20do%20site%20do%20CCVET%20e%20queria%20saber%20mais%20sobre%20o%20curso%20de%20Auxiliar%20Veterin%C3%A1rio." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2m0 18.13c-1.52 0-3.01-.41-4.3-1.18l-.31-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.35c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.24 8.24m4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42-.14-.01-.31-.01-.48-.01s-.43.06-.66.31c-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28"/></svg>
+  Tirar dúvidas
+</a>
+
+<script>
+/* Personaliza a mensagem do WhatsApp com nome + cidade (opcional).
+   Se o RD Station remover este script, o botão continua funcionando
+   com a mensagem padrão. */
+(function(){
+  var btn=document.getElementById("wa-cta");
+  var nome=document.getElementById("wa-nome");
+  var cidade=document.getElementById("wa-cidade");
+  var prev=document.getElementById("wa-preview");
+  if(!btn||!nome||!cidade){return;}
+  function build(){
+    var n=nome.value.trim(), c=cidade.value.trim(), msg;
+    if(n&&c){msg="Olá! Sou "+n+", de "+c+". Vim do site do CCVET e queria saber mais sobre o curso de Auxiliar Veterinário.";}
+    else if(n){msg="Olá! Sou "+n+". Vim do site do CCVET e queria saber mais sobre o curso de Auxiliar Veterinário.";}
+    else if(c){msg="Olá! Sou de "+c+" e vim do site do CCVET — queria saber mais sobre o curso de Auxiliar Veterinário.";}
+    else{msg="Olá! Vim do site do CCVET e queria saber mais sobre o curso de Auxiliar Veterinário.";}
+    btn.href="https://wa.me/5547996551654?text="+encodeURIComponent(msg);
+    if(prev){prev.textContent="\u201C"+msg+"\u201D";}
+  }
+  nome.addEventListener("input",build);
+  cidade.addEventListener("input",build);
+})();
+</script>
+</body>
+</html>
