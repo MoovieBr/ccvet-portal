@@ -55,3 +55,23 @@ são declarados no `runWith({ secrets: [...] })` das functions. Nunca no código
 
 A chave da Asaas em uso é de **sandbox** (contém `_hmlg_`); a troca para
 produção é só substituir o segredo. O código escolhe a URL da API pela chave.
+
+## Cópia local e GitHub
+
+A pasta local é um clone deste repositório, então os dois lados andam juntos:
+
+```bash
+git pull     # traz o que mudou no GitHub
+git push     # envia o que você alterou aqui
+```
+
+Para clonar em outra máquina (o caminho pode ter espaços, use aspas):
+
+```bash
+git clone https://github.com/MoovieBr/ccvet-portal.git "SITE CCVET"
+```
+
+`functions/node_modules/` e `public/portal/` não são versionados: o primeiro
+vem de `npm install` dentro de `functions/`, o segundo é gerado pelo build do
+`portal-app`. Uma cópia do `public/portal/` publicado acompanha a pasta local
+como referência, já que o fonte React ainda está sendo reescrito.
