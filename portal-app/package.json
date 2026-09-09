@@ -1,0 +1,21 @@
+{
+  "name": "ccvet-portal-app",
+  "description": "Portal do aluno e painel da coordenação da CCVET",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mux/mux-player": "^3.2.0",
+    "firebase": "^11.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^6.0.0"
+  }
+}
