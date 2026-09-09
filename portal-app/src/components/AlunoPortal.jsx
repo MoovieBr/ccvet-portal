@@ -16,8 +16,10 @@ export default function AlunoPortal({ me, turma, config, modulos, avisos, cronog
   const [aulaId, setAulaId] = React.useState(null);
   const [pagando, setPagando] = React.useState(null); // parcela sendo paga via PIX
   const aula = aulaId ? modulos.find((m) => m.id === aulaId) : null;
-  // Na pré-visualização o progresso é só local (nada é gravado no banco).
-  const [previewProg, setPreviewProg] = React.useState([]);
+  // Na pré-visualização começamos do progresso real do aluno escolhido e a
+  // partir daí tudo é local — marcar ou desmarcar aula não grava no banco.
+  const [previewProg, setPreviewProg] = React.useState(me.progresso || []);
+  React.useEffect(() => { setPreviewProg(me.progresso || []); }, [me.id]);
   const progFonte = preview ? previewProg : (me.progresso || []);
   const prog = progFonte.filter((id) => modulos.some((m) => m.id === id));
   const pct = modulos.length ? Math.round((prog.length / modulos.length) * 100) : 0;
